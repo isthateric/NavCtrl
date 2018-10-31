@@ -14,6 +14,8 @@
 		9EF237C61E5E35AA00FEFD4F /* CompanyVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9EF237C41E5E35AA00FEFD4F /* CompanyVC.xib */; };
 		9EF237C91E5E35C000FEFD4F /* ProductVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EF237C71E5E35C000FEFD4F /* ProductVC.swift */; };
 		9EF237CA1E5E35C000FEFD4F /* ProductVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9EF237C81E5E35C000FEFD4F /* ProductVC.xib */; };
+		CDFEE9182182678E005F6B07 /* WkView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CDFEE9172182678E005F6B07 /* WkView.xib */; };
+		CDFEE91A218267C4005F6B07 /* WkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDFEE919218267C3005F6B07 /* WkView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +28,8 @@
 		9EF237C41E5E35AA00FEFD4F /* CompanyVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CompanyVC.xib; sourceTree = "<group>"; };
 		9EF237C71E5E35C000FEFD4F /* ProductVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductVC.swift; sourceTree = "<group>"; };
 		9EF237C81E5E35C000FEFD4F /* ProductVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductVC.xib; sourceTree = "<group>"; };
+		CDFEE9172182678E005F6B07 /* WkView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WkView.xib; sourceTree = "<group>"; };
+		CDFEE919218267C3005F6B07 /* WkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WkView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +62,7 @@
 		9EF237AF1E5E351800FEFD4F /* NavCtrl_Swift */ = {
 			isa = PBXGroup;
 			children = (
+				CDFEE91621826766005F6B07 /* WkViewController */,
 				9EF237B01E5E351800FEFD4F /* AppDelegate.swift */,
 				9EF237CC1E5E35DB00FEFD4F /* CompanyViewController */,
 				9EF237CB1E5E35CD00FEFD4F /* ProductViewController */,
@@ -92,6 +97,15 @@
 				9EF237C41E5E35AA00FEFD4F /* CompanyVC.xib */,
 			);
 			name = CompanyViewController;
+			sourceTree = "<group>";
+		};
+		CDFEE91621826766005F6B07 /* WkViewController */ = {
+			isa = PBXGroup;
+			children = (
+				CDFEE9172182678E005F6B07 /* WkView.xib */,
+				CDFEE919218267C3005F6B07 /* WkView.swift */,
+			);
+			path = WkViewController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -154,6 +168,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CDFEE9182182678E005F6B07 /* WkView.xib in Resources */,
 				9EF237CA1E5E35C000FEFD4F /* ProductVC.xib in Resources */,
 				9EF237BB1E5E351800FEFD4F /* LaunchScreen.storyboard in Resources */,
 				9EF237B81E5E351800FEFD4F /* Assets.xcassets in Resources */,
@@ -168,6 +183,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CDFEE91A218267C4005F6B07 /* WkView.swift in Sources */,
 				9EF237C91E5E35C000FEFD4F /* ProductVC.swift in Sources */,
 				9EF237C51E5E35AA00FEFD4F /* CompanyVC.swift in Sources */,
 				9EF237B11E5E351800FEFD4F /* AppDelegate.swift in Sources */,
@@ -326,6 +342,7 @@
 				9EF237C11E5E351800FEFD4F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

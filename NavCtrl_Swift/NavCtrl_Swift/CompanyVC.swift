@@ -13,10 +13,10 @@ class CompanyVC: UIViewController{
     @IBOutlet var tableView: UITableView!
     var companyList : [String]?
     var productViewController : ProductVC?
-
+let logos = ["img-companyLogo_Apple","img-companyLogo_Twitter", "img-companyLogo_Tesla","img-companyLogo_Google"]
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.companyList = ["Apple mobile devices","Samsung mobile devices"]
+        self.companyList = ["Apple","Twitter","Tesla","Google"]
         
         //create edit button
         let editBarButton = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(toggleEditMode))
@@ -39,6 +39,13 @@ class CompanyVC: UIViewController{
             self.tableView.setEditing(false, animated: true)
             self.navigationItem.rightBarButtonItem?.title = "Edit"
         }
+        
+    }
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == UITableViewCellEditingStyle.delete{
+            companyList?.remove(at: indexPath.row)
+            tableView.reloadData()
+        }
     }
 }
 
@@ -58,48 +65,19 @@ extension CompanyVC: UITableViewDelegate, UITableViewDataSource {
             return 0
         }
     }
-    /*
-    // Override to support conditional editing of the table view.
-    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-    /*
-    // Override to support editing the table view.
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-            
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }
-    }
-    */
-    /*
-    // Override to support rearranging the table view
-    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-    }
-    */
-    /*
-    // Override to support conditional rearranging of the table view.
-    func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return NO if you do not want the item to be re-orderable.
-        return true
-    }
-    */
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let CellIdentifier = "Cell"
         let cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifier) ??
         UITableViewCell(style: .subtitle, reuseIdentifier: CellIdentifier)
         
+        cell.imageView?.image = UIImage.init(named: (logos[indexPath.row] + ".jpg"))
         if let currentCompanyName = self.companyList?[indexPath.row] {
             cell.textLabel?.text = currentCompanyName
         } else {
             cell.textLabel?.text = "?"
         }
+        
        return cell
     }
     
@@ -108,15 +86,25 @@ extension CompanyVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.productViewController = ProductVC()
         if indexPath.row == 0 {
-            self.productViewController?.title = "Apple Mobile Devices"
-        } else {
-            self.productViewController?.title = "Samsung Mobile Devices"
+            self.productViewController?.title = "Apple"
+        }
+        if indexPath.row == 1 {
+            self.productViewController?.title = "Twitter"
+        }
+        if indexPath.row == 2 {
+            self.productViewController?.title = "Tesla"
+        }
+        if indexPath.row == 3 {
+            self.productViewController?.title = "Google"
         }
         self.navigationController?.pushViewController(self.productViewController!, animated: true)
     }
+
  
+
+
+    
+    
+
+
 }
-
-    
-    
-

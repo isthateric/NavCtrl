@@ -7,13 +7,20 @@
 //
 
 import UIKit
+import WebKit
 
 class ProductVC: UIViewController {
     
-    
     @IBOutlet var tableView: UITableView!
     var products: [String]?
-
+    let applePro = ["Mac","iPod","iphone"]
+    let twitterPro = ["App","Website","Merch"]
+    let teslaPro = ["Model S","Model 3","Model X"]
+    let googlePro = ["adwords","phone","chrome"]
+    let logos = ["img-companyLogo_Apple","img-companyLogo_Twitter", "img-companyLogo_Tesla","img-companyLogo_Google"]
+    
+    var wkViewController: WkView?
+    let web = WKWebView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,12 +33,20 @@ class ProductVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
-        if self.title == "Apple mobile devices" {
-            self.products = ["iPad", "iPod Touch", "iPhone"]
-        } else {
-            self.products = ["Galaxy S4", "Galaxy Note", "Galaxy Tab"]
+        if self.title == "Apple" {
+           self.products = applePro
+       }
+        if self.title == "Twitter" {
+            self.products = twitterPro
+        }
+        if self.title == "Tesla" {
+            self.products = teslaPro
+        }
+        if self.title == "Google" {
+            self.products = googlePro
         }
         self.tableView.reloadData()
+
     }
 
     
@@ -49,6 +64,7 @@ class ProductVC: UIViewController {
             self.tableView.setEditing(false, animated: true)
             self.navigationItem.rightBarButtonItem?.title = "Edit"
         }
+        
     }
 }
 
@@ -78,54 +94,92 @@ extension ProductVC: UITableViewDataSource, UITableViewDelegate {
         let CellIdentifier = "Cell"
         let cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifier) ?? UITableViewCell(style: .subtitle, reuseIdentifier: CellIdentifier)
         
-        //configure the cell
-        cell.textLabel?.text = self.products?[indexPath.row]
+        if title == "Apple"{
+            cell.imageView?.image = UIImage.init(named: "img-companyLogo_Apple")
+            cell.textLabel?.text = applePro[indexPath.row]
+        }
+        if title == "Twitter"{
+            cell.imageView?.image = UIImage.init(named: "img-companyLogo_Twitter")
+            cell.textLabel?.text = twitterPro[indexPath.row]
+        }
+        if title == "Tesla"{
+            cell.imageView?.image = UIImage.init(named: "img-companyLogo_Tesla")
+            cell.textLabel?.text = teslaPro[indexPath.row]
+        }
+        
+        if title == "Google"{
+            cell.imageView?.image = UIImage.init(named: "img-companyLogo_Google")
+            cell.textLabel?.text = googlePro[indexPath.row]
+            
+        }
+//        else{
+//            cell.imageView?.image = UIImage.init(named: "")
+//        }
+        
+//        cell.imageView?.image = UIImage.init(named: (logos[indexPath.row] + ".jpg"))
+//        //configure the cell
+//        cell.textLabel?.text = self.products?[indexPath.row]
         return cell
     }
     
-    /*
-    // Override to support conditional editing of the table view.
-    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return NO if you do not want the specified item to be editable.
-        return true
-    }
-    */
-    /*
-    // Override to support editing the table view.
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }
-    }
-    */
-    /*
-    // Override to support rearranging the table view.
-    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
- 
-    }
-    */
-    /*
-    // Override to support conditional rearranging of the table view.
-    func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return NO if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-    /*
-    // In a xib-based application, navigation from a table can be handled in didSelectRowAt..
+        
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        if self.title == "Apple" {
+            self.products = applePro
+            self.wkViewController = WkView()
+           self.wkViewController?.urlString = "https://apple.com"
+            self.navigationController?.pushViewController(self.wkViewController!, animated: true)
+            return
+        }
+        if self.title == "Twitter" {
+            
+            self.products = twitterPro
+            self.wkViewController = WkView()
+            self.wkViewController?.urlString = "https://twitter.com"
+            self.navigationController?.pushViewController(self.wkViewController!, animated: true)
+            return
+        }
+        if self.title == "Tesla" {
+            self.products = teslaPro
+            self.wkViewController = WkView()
+            self.wkViewController?.urlString = "https://tesla.com"
+            self.navigationController?.pushViewController(self.wkViewController!, animated: true)
+           return
+        }
+        if self.title == "Google" {
+            self.products = googlePro
+            self.wkViewController = WkView()
+            self.wkViewController?.urlString = "https://google.com"
+            self.navigationController?.pushViewController(self.wkViewController!, animated: true)
+         return
+        }
+        self.tableView.reloadData() 
+        let row = indexPath.row
+        print("Row: \(row)")
         
-        // Navigation logic may go here, for example:
-        // Create the next view controller.
-        let detailViewController = DetailVC()
-        // Pass the selected object to the new view controller.
-        
-        // Push the view controller.
-        self.navigationController?.pushViewController(detailViewController, animated: true)
+//        self.wkViewController = WkView()
+////        self.wkViewController?.urlString = "https://apple.com"
+//        self.navigationController?.pushViewController(self.wkViewController!, animated: true)
     }
-*/
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+       
+        
+        if editingStyle == UITableViewCellEditingStyle.delete{
+            products?.remove(at: indexPath.row)
+            tableView.reloadData()
+        
+        }
+        }
+        
     
+    
+    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+      
+        let item = products![sourceIndexPath.row]
+        products?.remove(at: sourceIndexPath.row)
+        products?.insert(item, at: destinationIndexPath.row)
+    }
 }
+
