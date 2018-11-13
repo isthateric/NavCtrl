@@ -9,18 +9,16 @@
 import Foundation
 
 
-class Product {
-    
+class Product: NSObject {
     var name: String
     var logo: String
     var url: String
     
-    
    init(name: String, logo: String, url: String)
-    {
-        self.name = name
-        self.logo = logo
-        self.url = url
-    }
+        {
+    self.name = name
+    self.logo = logo
+    self.url = url
+}
 
 }

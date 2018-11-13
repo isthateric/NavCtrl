@@ -7,16 +7,3 @@
 //
 
 import Foundation
-
-
-
-//class Singleton: NSObject{
-//    static let sharedInstance = Singleton()
-//    
-//
-//    
-//    }
-
-    
-
-//actManager.shared.launch()
