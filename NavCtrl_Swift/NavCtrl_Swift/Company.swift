@@ -23,5 +23,4 @@ class Company {
         self.products = productsFrom
     }
     
-    
 }
