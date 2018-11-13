@@ -5,9 +5,7 @@
 //  Created by Eric Fuentes on 10/31/18.
 //  Copyright © 2018 turntotech. All rights reserved.
 //
-
 import Foundation
-
 
 class Company : NSObject{
 
