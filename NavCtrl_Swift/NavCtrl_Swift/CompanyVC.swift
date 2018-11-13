@@ -11,24 +11,41 @@ import UIKit
 class CompanyVC: UIViewController{
     
     @IBOutlet var tableView: UITableView!
-    var companyList : [String]?
+//    var companyList : [String]?
+    var companyList: [Company]?
     var productViewController : ProductVC?
-let logos = ["img-companyLogo_Apple","img-companyLogo_Twitter", "img-companyLogo_Tesla","img-companyLogo_Google"]
+//    let logos = ["img-companyLogo_Apple","img-companyLogo_Twitter", "img-companyLogo_Tesla","img-companyLogo_Google"]
+    var addDat : addEdit?
+//let pgtmanger = Dao()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.companyList = ["Apple","Twitter","Tesla","Google"]
+        
+        
+      
+//        self.companyList = ["Apple","Twitter","Tesla","Google"]
         
         //create edit button
         let editBarButton = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(toggleEditMode))
+        let addBarButton = UIBarButtonItem(title: "+", style: .plain, target: self, action: #selector(toggleEditMode))
         self.navigationItem.rightBarButtonItem = editBarButton
+        self.navigationItem.leftBarButtonItem = addBarButton
         
         self.title = "Mobile Device Makers"
+        
+        companyList = Dao.sharedInstance.companyArray
         // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    func toggleAddMode(){
+        if (self.navigationItem.leftBarButtonItem?.isEnabled)!{
+            
+        }
+        
     }
     
     func toggleEditMode() {
@@ -54,6 +71,7 @@ let logos = ["img-companyLogo_Apple","img-companyLogo_Twitter", "img-companyLogo
 extension CompanyVC: UITableViewDelegate, UITableViewDataSource {
 
     func numberOfSections(in tableView: UITableView) -> Int {
+        
         return 1
     }
     
@@ -71,9 +89,10 @@ extension CompanyVC: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifier) ??
         UITableViewCell(style: .subtitle, reuseIdentifier: CellIdentifier)
         
-        cell.imageView?.image = UIImage.init(named: (logos[indexPath.row] + ".jpg"))
+//        cell.imageView?.image = UIImage.init(named: (logos[indexPath.row] + ".jpg"))
         if let currentCompanyName = self.companyList?[indexPath.row] {
-            cell.textLabel?.text = currentCompanyName
+            cell.imageView?.image = UIImage.init(named: currentCompanyName.logo)
+            cell.textLabel?.text = currentCompanyName.name
         } else {
             cell.textLabel?.text = "?"
         }
@@ -85,18 +104,21 @@ extension CompanyVC: UITableViewDelegate, UITableViewDataSource {
     // In a xib-based application, navigation from a table can be handled in -tableView:didSelectRowAtIndexPath:
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.productViewController = ProductVC()
-        if indexPath.row == 0 {
-            self.productViewController?.title = "Apple"
-        }
-        if indexPath.row == 1 {
-            self.productViewController?.title = "Twitter"
-        }
-        if indexPath.row == 2 {
-            self.productViewController?.title = "Tesla"
-        }
-        if indexPath.row == 3 {
-            self.productViewController?.title = "Google"
-        }
+        guard let currentCompany = companyList?[indexPath.row] else { return }
+        productViewController?.title = currentCompany.name
+        productViewController?.products = currentCompany.products
+//        if indexPath.row == 0 {
+//            self.productViewController?.title = "Apple"
+//        }
+//        if indexPath.row == 1 {
+//            self.productViewController?.title = "Twitter"
+//        }
+//        if indexPath.row == 2 {
+//            self.productViewController?.title = "Tesla"
+//        }
+//        if indexPath.row == 3 {
+//            self.productViewController?.title = "Google"
+//        }
         self.navigationController?.pushViewController(self.productViewController!, animated: true)
     }
 
