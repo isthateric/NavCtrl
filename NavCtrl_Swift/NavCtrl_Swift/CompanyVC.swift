@@ -11,63 +11,66 @@ import UIKit
 class CompanyVC: UIViewController{
     
     @IBOutlet var tableView: UITableView!
-//    var companyList : [String]?
     var companyList: [Company]?
     var productViewController : ProductVC?
-//    let logos = ["img-companyLogo_Apple","img-companyLogo_Twitter", "img-companyLogo_Tesla","img-companyLogo_Google"]
-    var addDat : addEdit?
-//let pgtmanger = Dao()
+    let  addEditView = AddEditVC()
+    var newCompanyListed: [Company]?
     
-    override func viewDidLoad() {
+     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
-      
-//        self.companyList = ["Apple","Twitter","Tesla","Google"]
-        
+
         //create edit button
         let editBarButton = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(toggleEditMode))
-        let addBarButton = UIBarButtonItem(title: "+", style: .plain, target: self, action: #selector(toggleEditMode))
+        let addBarButton = UIBarButtonItem(title: "+", style: .plain, target: self, action: #selector(toggleAddMode))
         self.navigationItem.rightBarButtonItem = editBarButton
         self.navigationItem.leftBarButtonItem = addBarButton
         
         self.title = "Mobile Device Makers"
         
-        companyList = Dao.sharedInstance.companyArray
+       // companyList = Dao.sharedInstance.companyArray
+       // newCompanyListed = Dao.sharedInstance.createdCompany
         // Do any additional setup after loading the view.
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        companyList = Dao.sharedInstance.companyArray
+        tableView.reloadData()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    func toggleAddMode(){
-        if (self.navigationItem.leftBarButtonItem?.isEnabled)!{
-            
-        }
-        
-    }
-    
-    func toggleEditMode() {
+ 
+        func toggleEditMode() {
         if self.navigationItem.rightBarButtonItem?.title == "Edit" {
             self.tableView.setEditing(true, animated: true)
+            self.tableView.allowsSelectionDuringEditing = true
             self.navigationItem.rightBarButtonItem?.title = "Done"
         } else {
             self.tableView.setEditing(false, animated: true)
+            self.tableView.allowsSelectionDuringEditing = false
             self.navigationItem.rightBarButtonItem?.title = "Edit"
         }
-        
-    }
+            }
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == UITableViewCellEditingStyle.delete{
             companyList?.remove(at: indexPath.row)
             tableView.reloadData()
         }
     }
+    
+    func toggleAddMode(){
+        
+        // Open AddEditVC for new company
+        self.addEditView.companyAssigned = nil
+        self.navigationController?.pushViewController(self.addEditView, animated: true)
+
+    }
+    
 }
-
 // MARK: delegate & datasource methods
-
 extension CompanyVC: UITableViewDelegate, UITableViewDataSource {
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -96,37 +99,27 @@ extension CompanyVC: UITableViewDelegate, UITableViewDataSource {
         } else {
             cell.textLabel?.text = "?"
         }
-        
-       return cell
+            return cell
     }
-    
-    
-    // In a xib-based application, navigation from a table can be handled in -tableView:didSelectRowAtIndexPath:
+      // In a xib-based application, navigation from a table can be handled in -tableView:didSelectRowAtIndexPath:
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.productViewController = ProductVC()
+        
         guard let currentCompany = companyList?[indexPath.row] else { return }
-        productViewController?.title = currentCompany.name
-        productViewController?.products = currentCompany.products
-//        if indexPath.row == 0 {
-//            self.productViewController?.title = "Apple"
-//        }
-//        if indexPath.row == 1 {
-//            self.productViewController?.title = "Twitter"
-//        }
-//        if indexPath.row == 2 {
-//            self.productViewController?.title = "Tesla"
-//        }
-//        if indexPath.row == 3 {
-//            self.productViewController?.title = "Google"
-//        }
-        self.navigationController?.pushViewController(self.productViewController!, animated: true)
-    }
-
- 
-
-
-    
-    
-
-
+        
+        
+        if  self.tableView.isEditing == true {
+            // Open AddEditVC for selected company
+            self.addEditView.companyIndex = indexPath.row
+            self.addEditView.companyAssigned = currentCompany
+            self.navigationController?.pushViewController(self.addEditView, animated: true)
+        }
+        else {
+            
+            self.productViewController = ProductVC()
+            productViewController?.title = currentCompany.name
+            productViewController?.products = currentCompany.products
+            self.navigationController?.pushViewController(self.productViewController!, animated: true)
+        }
+        
+     }
 }

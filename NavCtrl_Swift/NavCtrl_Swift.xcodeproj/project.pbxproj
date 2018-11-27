@@ -14,9 +14,10 @@
 		9EF237C61E5E35AA00FEFD4F /* CompanyVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9EF237C41E5E35AA00FEFD4F /* CompanyVC.xib */; };
 		9EF237C91E5E35C000FEFD4F /* ProductVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EF237C71E5E35C000FEFD4F /* ProductVC.swift */; };
 		9EF237CA1E5E35C000FEFD4F /* ProductVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9EF237C81E5E35C000FEFD4F /* ProductVC.xib */; };
+		CD59023321A34B63000EFF7B /* AddEditProductVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD59023221A34B63000EFF7B /* AddEditProductVC.swift */; };
+		CD59023521A34B79000EFF7B /* AddEditProductVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD59023421A34B79000EFF7B /* AddEditProductVC.xib */; };
 		CD786C012194DCEC0099AC03 /* AddEditVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD786C002194DCEC0099AC03 /* AddEditVC.xib */; };
 		CD786C032194DDAD0099AC03 /* AddEditVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD786C022194DDAD0099AC03 /* AddEditVC.swift */; };
-		CD786C05219B43D00099AC03 /* ActManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD786C04219B43D00099AC03 /* ActManager.swift */; };
 		CDFEE9182182678E005F6B07 /* WkView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CDFEE9172182678E005F6B07 /* WkView.xib */; };
 		CDFEE91A218267C4005F6B07 /* WkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDFEE919218267C3005F6B07 /* WkView.swift */; };
 		CDFEE91C218A102A005F6B07 /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDFEE91B218A102A005F6B07 /* Product.swift */; };
@@ -34,9 +35,10 @@
 		9EF237C41E5E35AA00FEFD4F /* CompanyVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CompanyVC.xib; sourceTree = "<group>"; };
 		9EF237C71E5E35C000FEFD4F /* ProductVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductVC.swift; sourceTree = "<group>"; };
 		9EF237C81E5E35C000FEFD4F /* ProductVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductVC.xib; sourceTree = "<group>"; };
+		CD59023221A34B63000EFF7B /* AddEditProductVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEditProductVC.swift; sourceTree = "<group>"; };
+		CD59023421A34B79000EFF7B /* AddEditProductVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddEditProductVC.xib; sourceTree = "<group>"; };
 		CD786C002194DCEC0099AC03 /* AddEditVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddEditVC.xib; sourceTree = "<group>"; };
 		CD786C022194DDAD0099AC03 /* AddEditVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEditVC.swift; sourceTree = "<group>"; };
-		CD786C04219B43D00099AC03 /* ActManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActManager.swift; sourceTree = "<group>"; };
 		CDFEE9172182678E005F6B07 /* WkView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WkView.xib; sourceTree = "<group>"; };
 		CDFEE919218267C3005F6B07 /* WkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WkView.swift; sourceTree = "<group>"; };
 		CDFEE91B218A102A005F6B07 /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
@@ -76,6 +78,8 @@
 			children = (
 				CDFEE91621826766005F6B07 /* WkViewController */,
 				9EF237B01E5E351800FEFD4F /* AppDelegate.swift */,
+				CD59023121A34B27000EFF7B /* AddEditProduct */,
+				CD59023021A34AF7000EFF7B /* AddEditCompany */,
 				9EF237CC1E5E35DB00FEFD4F /* CompanyViewController */,
 				9EF237CB1E5E35CD00FEFD4F /* ProductViewController */,
 				9EF237C21E5E356100FEFD4F /* Supporting Files */,
@@ -110,11 +114,28 @@
 				CDFEE91D218A164C005F6B07 /* Company.swift */,
 				CDFEE91F2190D433005F6B07 /* Dao.swift */,
 				9EF237C41E5E35AA00FEFD4F /* CompanyVC.xib */,
-				CD786C002194DCEC0099AC03 /* AddEditVC.xib */,
-				CD786C022194DDAD0099AC03 /* AddEditVC.swift */,
-				CD786C04219B43D00099AC03 /* ActManager.swift */,
 			);
 			name = CompanyViewController;
+			sourceTree = "<group>";
+		};
+		CD59023021A34AF7000EFF7B /* AddEditCompany */ = {
+			isa = PBXGroup;
+			children = (
+				CD786C022194DDAD0099AC03 /* AddEditVC.swift */,
+				CD786C002194DCEC0099AC03 /* AddEditVC.xib */,
+			);
+			name = AddEditCompany;
+			path = "New Group";
+			sourceTree = "<group>";
+		};
+		CD59023121A34B27000EFF7B /* AddEditProduct */ = {
+			isa = PBXGroup;
+			children = (
+				CD59023221A34B63000EFF7B /* AddEditProductVC.swift */,
+				CD59023421A34B79000EFF7B /* AddEditProductVC.xib */,
+			);
+			name = AddEditProduct;
+			path = "New Group";
 			sourceTree = "<group>";
 		};
 		CDFEE91621826766005F6B07 /* WkViewController */ = {
@@ -192,6 +213,7 @@
 				9EF237B81E5E351800FEFD4F /* Assets.xcassets in Resources */,
 				CD786C012194DCEC0099AC03 /* AddEditVC.xib in Resources */,
 				9EF237C61E5E35AA00FEFD4F /* CompanyVC.xib in Resources */,
+				CD59023521A34B79000EFF7B /* AddEditProductVC.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -202,6 +224,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CD59023321A34B63000EFF7B /* AddEditProductVC.swift in Sources */,
 				CDFEE91E218A164C005F6B07 /* Company.swift in Sources */,
 				CDFEE91A218267C4005F6B07 /* WkView.swift in Sources */,
 				CD786C032194DDAD0099AC03 /* AddEditVC.swift in Sources */,
@@ -210,7 +233,6 @@
 				CDFEE91C218A102A005F6B07 /* Product.swift in Sources */,
 				9EF237B11E5E351800FEFD4F /* AppDelegate.swift in Sources */,
 				CDFEE9202190D433005F6B07 /* Dao.swift in Sources */,
-				CD786C05219B43D00099AC03 /* ActManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

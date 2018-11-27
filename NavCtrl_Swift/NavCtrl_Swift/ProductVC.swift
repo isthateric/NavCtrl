@@ -15,19 +15,19 @@ class ProductVC: UIViewController {
     
     @IBOutlet var tableView: UITableView!
     var products: [Product]?
-//    let applePro = ["Mac","iPod","iphone"]
-//    let twitterPro = ["App","Website","Merch"]
-//    let teslaPro = ["Model S","Model 3","Model X"]
-//    let googlePro = ["adwords","phone","chrome"]
-//    let logos = ["img-companyLogo_Apple","img-companyLogo_Twitter", "img-companyLogo_Tesla","img-companyLogo_Google"]
-    
     var wkViewController: WkView?
     let web = WKWebView()
-    
+    let addEditproduct = AddEditProductVC()
+//    var newProductListed: [Product]?
+//    let addBarButton = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(toggleAddMode))
     override func viewDidLoad() {
         super.viewDidLoad()
-        let editBarButton = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(toggleEditMode))
-        self.navigationItem.rightBarButtonItem = editBarButton
+       
+           
+            let editBarButton = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(toggleEditMode))
+            self.navigationItem.rightBarButtonItem = editBarButton
+        
+//        let addBarButton = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(toggleAddMode))
         // Do any additional setup after loading the view.
     }
     
@@ -35,20 +35,10 @@ class ProductVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
-//        if self.title == "Apple" {
-//           self.products = applePro
-//       }
-//        if self.title == "Twitter" {
-//            self.products = twitterPro
-//        }
-//        if self.title == "Tesla" {
-//            self.products = teslaPro
-//        }
-//        if self.title == "Google" {
-//            self.products = googlePro
-//        }
-//        self.tableView.reloadData()
-
+        if let title = self.title {
+            products = Dao.sharedInstance.getProductsFor(companyName: title)
+            tableView.reloadData()
+        }
     }
 
     
@@ -59,15 +49,36 @@ class ProductVC: UIViewController {
     
     
     func toggleEditMode() {
-        if self.navigationItem.rightBarButtonItem?.title == "Edit" {
-            self.tableView.setEditing(true, animated: true)
-            self.navigationItem.rightBarButtonItem?.title = "Done"
-        } else {
-            self.tableView.setEditing(false, animated: true)
-            self.navigationItem.rightBarButtonItem?.title = "Edit"
-        }
+
+            if self.navigationItem.rightBarButtonItem?.title == "Edit" {
+                self.tableView.setEditing(true, animated: true)
+                self.tableView.allowsSelectionDuringEditing = true
+                self.navigationItem.rightBarButtonItem?.title = "Done"
+            } else {
+                self.tableView.setEditing(false, animated: true)
+                self.tableView.allowsSelectionDuringEditing = false
+                self.navigationItem.rightBarButtonItem?.title = "Edit"
+            }
+//        if self.navigationItem.rightBarButtonItem?.isEnabled == true {
+//            let companyName =  self.title
+//            addEditproduct.companyName = companyName
+//            self.navigationController?.pushViewController(self.addEditproduct, animated: true)
+//        }
         
     }
+    
+    func toggleAddMode(){
+        self.addEditproduct.productAssigned = nil
+        self.navigationController?.pushViewController(self.addEditproduct, animated: true)
+
+//        if self.navigationItem.rightBarButtonItem?.title == "Add" {
+//            self.tableView.setEditing(true, animated: true)
+//            self.navigationController?.pushViewController(AddEditProductVC(), animated: true)
+//            self.tableView.allowsSelectionDuringEditing = true
+//
+        //}
+    }
+    
 }
 
 
@@ -99,32 +110,6 @@ extension ProductVC: UITableViewDataSource, UITableViewDelegate {
             cell.imageView?.image = UIImage.init(named: product.logo)
             cell.textLabel?.text = product.name
         }
-        
-//        if title == "Apple"{
-//            cell.imageView?.image = UIImage.init(named: "img-companyLogo_Apple")
-//            cell.textLabel?.text = applePro[indexPath.row]
-//        }
-//        if title == "Twitter"{
-//            cell.imageView?.image = UIImage.init(named: "img-companyLogo_Twitter")
-//            cell.textLabel?.text = twitterPro[indexPath.row]
-//        }
-//        if title == "Tesla"{
-//            cell.imageView?.image = UIImage.init(named: "img-companyLogo_Tesla")
-//            cell.textLabel?.text = teslaPro[indexPath.row]
-//        }
-//
-//        if title == "Google"{
-//            cell.imageView?.image = UIImage.init(named: "img-companyLogo_Google")
-//            cell.textLabel?.text = googlePro[indexPath.row]
-//
-//        }
-//        else{
-//            cell.imageView?.image = UIImage.init(named: "")
-//        }
-        
-//        cell.imageView?.image = UIImage.init(named: (logos[indexPath.row] + ".jpg"))
-//        //configure the cell
-//        cell.textLabel?.text = self.products?[indexPath.row]
         return cell
     }
     
@@ -132,6 +117,20 @@ extension ProductVC: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+       
+        guard let currentProduct = products?[indexPath.row] else { return }
+        
+//        if self.navigationItem.rightBarButtonItem?.title == "done"{
+//            let productEdit = products?[indexPath.row]{
+//                navigationController?.pushViewController(self.addEdito, animated: true)
+//            }
+//        }
+        if  self.tableView.isEditing == true {
+            self.addEditproduct.productAssigned = currentProduct
+            self.navigationController?.pushViewController(self.addEditproduct, animated: true)
+            return
+        }
+        
         
         if let product = products?[indexPath.row] {
             self.wkViewController = WkView()
@@ -139,49 +138,15 @@ extension ProductVC: UITableViewDataSource, UITableViewDelegate {
                         self.navigationController?.pushViewController(self.wkViewController!, animated: true)
                         return
         }
-//        if self.title == "Apple" {
-//            self.products = applePro
-//            self.wkViewController = WkView()
-//           self.wkViewController?.urlString = "https://apple.com"
-//            self.navigationController?.pushViewController(self.wkViewController!, animated: true)
-//            return
-//        }
-//        if self.title == "Twitter" {
-//            self.products = twitterPro
-//            self.wkViewController = WkView()
-//            self.wkViewController?.urlString = "https://twitter.com"
-//            self.navigationController?.pushViewController(self.wkViewController!, animated: true)
-//            return
-//        }
-//        if self.title == "Tesla" {
-//            self.products = teslaPro
-//            self.wkViewController = WkView()
-//            self.wkViewController?.urlString = "https://tesla.com"
-//            self.navigationController?.pushViewController(self.wkViewController!, animated: true)
-//           return
-//        }
-//        if self.title == "Google" {
-//            self.products = googlePro
-//            self.wkViewController = WkView()
-//            self.wkViewController?.urlString = "https://google.com"
-//            self.navigationController?.pushViewController(self.wkViewController!, animated: true)
-//         return
-//        }
-//        self.tableView.reloadData()
+
         let row = indexPath.row
         print("Row: \(row)")
-        
-//        self.wkViewController = WkView()
-////        self.wkViewController?.urlString = "https://apple.com"
-//        self.navigationController?.pushViewController(self.wkViewController!, animated: true)
     }
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
        
-        
         if editingStyle == UITableViewCellEditingStyle.delete{
             products?.remove(at: indexPath.row)
             tableView.reloadData()
-        
         }
         }
         
@@ -193,5 +158,6 @@ extension ProductVC: UITableViewDataSource, UITableViewDelegate {
         products?.remove(at: sourceIndexPath.row)
         products?.insert(item, at: destinationIndexPath.row)
     }
+  
 }
 

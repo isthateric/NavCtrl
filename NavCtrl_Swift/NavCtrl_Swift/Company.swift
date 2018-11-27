@@ -15,7 +15,7 @@ class Company : NSObject{
     var url: String
     var products: [Product]
     
-    init(name: String, logo: String, url: String, productsFrom: [product]){
+    init(name: String, logo: String, url: String, productsFrom: [Product]){
         self.name = name
         self.logo = logo
         self.url = url
