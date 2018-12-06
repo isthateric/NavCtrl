@@ -14,7 +14,7 @@
             <connections>
                 <outlet property="initialText" destination="vJh-gz-Dnd" id="Z3Y-Cl-hRY"/>
                 <outlet property="nameText" destination="KZ3-sy-g4C" id="M1M-SQ-dvp"/>
-                <outlet property="urlText" destination="Kfj-lF-ks9" id="xbu-2e-2am"/>
+                <outlet property="tickerText" destination="Kfj-lF-ks9" id="xbu-2e-2am"/>
                 <outlet property="view" destination="iN0-l3-epB" id="fuA-Ks-RgQ"/>
             </connections>
         </placeholder>

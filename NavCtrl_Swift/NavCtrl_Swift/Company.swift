@@ -12,13 +12,15 @@ class Company : NSObject{
 
     var name: String
     var logo: String
-    var url: String
+    var ticker: String
+    var price: Double
     var products: [Product]
     
-    init(name: String, logo: String, url: String, productsFrom: [Product]){
+    init(name: String, ticker: String, logo: String, price: Double, productsFrom: [Product]){
         self.name = name
         self.logo = logo
-        self.url = url
+        self.ticker = ticker
+        self.price = price
         products = productsFrom
     }
     

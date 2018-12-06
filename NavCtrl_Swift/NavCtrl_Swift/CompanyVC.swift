@@ -11,14 +11,21 @@ import UIKit
 class CompanyVC: UIViewController{
     
     @IBOutlet var tableView: UITableView!
+    
     var companyList: [Company]?
     var productViewController : ProductVC?
     let  addEditView = AddEditVC()
     var newCompanyListed: [Company]?
     
+    var mySubtitles: [Company]?
+    
+    var stockFetcher = StockFetcher()
+    
      override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+         self.stockFetcher.delegate = self
+        
         //create edit button
         let editBarButton = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(toggleEditMode))
         let addBarButton = UIBarButtonItem(title: "+", style: .plain, target: self, action: #selector(toggleAddMode))
@@ -30,19 +37,30 @@ class CompanyVC: UIViewController{
        // companyList = Dao.sharedInstance.companyArray
        // newCompanyListed = Dao.sharedInstance.createdCompany
         // Do any additional setup after loading the view.
+        
     }
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         companyList = Dao.sharedInstance.companyArray
-        tableView.reloadData()
+        
+        
+        
+        for company in companyList! {
+            let row = companyList?.firstIndex(of: company)
+                        print(row)
+            stockFetcher.fetchStockPriceForTicker(tickerName: company.ticker) // also pass the row
+        }
+        
+        //tableView.reloadData()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
- 
+
         func toggleEditMode() {
         if self.navigationItem.rightBarButtonItem?.title == "Edit" {
             self.tableView.setEditing(true, animated: true)
@@ -66,12 +84,13 @@ class CompanyVC: UIViewController{
         // Open AddEditVC for new company
         self.addEditView.companyAssigned = nil
         self.navigationController?.pushViewController(self.addEditView, animated: true)
-
     }
     
 }
 // MARK: delegate & datasource methods
-extension CompanyVC: UITableViewDelegate, UITableViewDataSource {
+extension CompanyVC: UITableViewDelegate, UITableViewDataSource{
+
+    
 
     func numberOfSections(in tableView: UITableView) -> Int {
         
@@ -95,7 +114,12 @@ extension CompanyVC: UITableViewDelegate, UITableViewDataSource {
 //        cell.imageView?.image = UIImage.init(named: (logos[indexPath.row] + ".jpg"))
         if let currentCompanyName = self.companyList?[indexPath.row] {
             cell.imageView?.image = UIImage.init(named: currentCompanyName.logo)
-            cell.textLabel?.text = currentCompanyName.name
+            cell.textLabel?.text = currentCompanyName.name + "   (\(currentCompanyName.ticker))"
+            cell.detailTextLabel?.text = String(currentCompanyName.price)
+            //let tickerName = currentCompanyName.ticker
+            
+            //stockFetcher.fetchStockPriceForTicker(tickerName: tickerName)
+            
         } else {
             cell.textLabel?.text = "?"
         }
@@ -123,3 +147,67 @@ extension CompanyVC: UITableViewDelegate, UITableViewDataSource {
         
      }
 }
+func fetchStockPriceForTicker(tickerName: String)  {
+    
+    guard let urlGet = URL(string: "https://ws-api.iextrading.com/1.0/tops?symbols=\(tickerName)") else {return}
+    
+    let session = URLSession.shared
+    let task =
+        session.dataTask(with: urlGet) { (data: Data?, response: URLResponse?, error: Error?) in
+            
+            guard let data = data else {return}
+            
+            let dataAsString =  String( data: data, encoding: .utf8)
+            print(dataAsString!)
+            
+            do {
+                
+                let stock =  try JSONDecoder().decode([Stock].self, from: data)
+                DispatchQueue.main.async {
+                    print(stock[0].lastSalePrice)
+                    
+                }
+                
+            }
+            catch {
+                print(error)
+            }
+    }
+    task.resume()
+    
+}
+
+
+
+
+extension CompanyVC : StockFetcherDelegate {
+    func priceIsHere() {
+        tableView.reloadData()
+    }
+    
+    
+    func stockFetchSuccessWithPriceString(Company: Company, price: String ) { // get both price and row
+        print("Stock price received ", price)
+        //self.priceLabel.text = "$\(price)"
+        for company in companyList! {
+            if company == Company{
+                company.price = Double(price)!
+                break
+            }
+        }
+        tableView.reloadData()
+        
+    }
+    
+    func stockFetchDidFailWithError(error: Error) {
+        print("Could not fetch stock price, this is a description of the error: \(error.localizedDescription)")
+    }
+    
+    func stockFetchDidStart() {
+        print("Initiating stock fetch...")
+        //could start an activity indicator here, etc.
+    }
+    
+}
+
+

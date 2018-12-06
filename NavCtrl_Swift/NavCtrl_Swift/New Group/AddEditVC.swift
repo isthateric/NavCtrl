@@ -17,7 +17,7 @@ class AddEditVC : UIViewController{
     let defaults = UserDefaults.standard
     @IBOutlet weak var nameText: UITextField!
     @IBOutlet weak var initialText: UITextField!
-    @IBOutlet weak var urlText: UITextField!
+    @IBOutlet weak var tickerText: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -96,16 +96,16 @@ class AddEditVC : UIViewController{
         
         if companyAssigned == nil{ // new company - called from toggleAddMode() - assigning nil to companyAssigned
             nameText.text! = "ADD COMPANY HERE"
-            initialText.text! = "ADD LOGO HERE"
-            urlText.text! = "ADD URL HERE"
+            initialText.text! = "ADD Logo HERE"
+            tickerText.text! = "ADD Ticker HERE"
             self.title = "Add Company"
         } else {
             let logo = companyAssigned?.logo
             let name = companyAssigned?.name
-            let url = companyAssigned?.url
+            let ticker = companyAssigned?.ticker
             nameText.text! = name!
             initialText.text! = logo!
-            urlText.text! = url!
+            tickerText.text! = ticker!
             self.title = "Edit Company"
         }
     }
@@ -115,12 +115,12 @@ class AddEditVC : UIViewController{
 
     func toggleSaveMode() {
         if companyAssigned == nil{ // new company - called from toggleAddMode() - assigning nil to companyAssigned
-            Dao.sharedInstance.newCompCreate(newName: nameText.text!, newLogo: initialText.text!, newURL: urlText.text!)
+            Dao.sharedInstance.newCompCreate(newName: nameText.text!, newLogo: initialText.text!, newURL: tickerText.text!, price: 0)
             
         } else {
            // Dao.sharedInstance - update
            // Dao.sharedInstance.updateCompany(index: companyIndex, newName: nameText.text!, newLogo: initialText.text!, newURL: urlText.text!)
-            Dao.sharedInstance.updateCompany(company: companyAssigned!, newName: nameText.text!, newLogo: initialText.text!, newURL: urlText.text!)
+            Dao.sharedInstance.updateCompany(company: companyAssigned!, newName: nameText.text!, newLogo: initialText.text!, newURL: tickerText.text!)
         }
         
         self.navigationController?.popViewController(animated: true)

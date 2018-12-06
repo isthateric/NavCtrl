@@ -7,15 +7,18 @@
 //
 
 import Foundation
-
-
-import Foundation
 import UIKit
+
+
+
+
 class Dao {
  let defaults = UserDefaults.standard
+    var stockFetcher: StockFetcher?
+    
 
     static let sharedInstance = Dao()
-    
+
     var companyArray = [Company]()
 //    var createdCompany = [Company]()
 //    var productArray = [Product]()
@@ -29,10 +32,10 @@ class Dao {
     
     func create() -> [Company] {
         
-        let appleCom = Company(name: "Apple", logo: "img-companyLogo_Apple", url: "https://www.apple.com/", productsFrom: [Product]())
-        let twitterCom = Company(name: "Twitter", logo: "img-companyLogo_Twitter", url: "https://twitter.com/", productsFrom: [Product]())
-        let teslaCom = Company(name: "Tesla", logo: "img-companyLogo_Tesla", url: "https://www.tesla.com/", productsFrom: [Product]())
-        let googleCom = Company(name: "Google", logo: "img-companyLogo_Google", url: "https://www.google.com/", productsFrom: [Product]())
+        let appleCom = Company(name: "Apple" , ticker: "AAPL", logo: "img-companyLogo_Apple", price: 0, productsFrom: [Product]())
+        let twitterCom = Company(name: "Twitter", ticker: "TWTR", logo: "img-companyLogo_Twitter", price: 0, productsFrom: [Product]())
+        let teslaCom = Company(name: "Tesla", ticker: "TSLA", logo: "img-companyLogo_Tesla", price: 0, productsFrom: [Product]())
+        let googleCom = Company(name: "Google", ticker: "GOOGL", logo: "img-companyLogo_Google", price: 0, productsFrom: [Product]())
         
         googleCom.products.append(Product(name: "Google Adwords", logo: "img-companyLogo_Google", url: "https://ads.google.com/"))
         googleCom.products.append(Product(name: "Pixel 3", logo: "img-companyLogo_Google", url: "https://store.google.com/product/pixel_3"))
@@ -60,8 +63,9 @@ class Dao {
 //        return [newComp]
 //
 //    }
-    func newCompCreate(newName: String, newLogo: String, newURL: String) {
-        let newComp = Company(name: newName, logo: newLogo, url: newURL, productsFrom:[Product]())
+    func newCompCreate(newName: String, newLogo: String, newURL: String, price: Double) {
+        
+        let newComp = Company(name: newName, ticker: newURL, logo: newLogo, price:price , productsFrom:[Product]())
         companyArray.append( newComp )
 //        return newComp
     }
@@ -94,7 +98,7 @@ class Dao {
         //companyArray[index]
         companyArray[index].name = newName
         companyArray[index].logo = newLogo
-        companyArray[index].url = newURL
+        companyArray[index].ticker = newURL
         return
     }
     
@@ -102,7 +106,7 @@ class Dao {
         //companyArray[index]
         company.name = newName
         company.logo = newLogo
-        company.url = newURL
+        company.ticker = newURL
         return
     }
     
@@ -112,5 +116,34 @@ class Dao {
         Product.url = newURL
         
         return
+    }
+    
+    func updatePriceFor(ticker: String, price: Double) {
+        for (index, company) in companyArray.enumerated() {
+            if company.ticker == ticker {
+                companyArray[index].price = price
+            }
+        }
+    }
+    
+    
+
+//extension UIViewController : StockFetcherDelegate {
+//
+//    func stockFetchSuccessWithPriceString(price: String) {
+//        print("Stock price received")
+//        //self.priceLabel.text = "$\(price)"
+//    }
+//
+//    func stockFetchDidFailWithError(error: Error) {
+//        print("Could not fetch stock price, this is a description of the error: \(error.localizedDescription)")
+//    }
+//
+//    func stockFetchDidStart() {
+//        print("Initiating stock fetch...")
+//        //could start an activity indicator here, etc.
+//    }
+//
+//}
 }
-}
+

@@ -16,6 +16,8 @@
 		9EF237CA1E5E35C000FEFD4F /* ProductVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9EF237C81E5E35C000FEFD4F /* ProductVC.xib */; };
 		CD59023321A34B63000EFF7B /* AddEditProductVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD59023221A34B63000EFF7B /* AddEditProductVC.swift */; };
 		CD59023521A34B79000EFF7B /* AddEditProductVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD59023421A34B79000EFF7B /* AddEditProductVC.xib */; };
+		CD59023821AF3A6F000EFF7B /* StockFectcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD59023721AF3A6F000EFF7B /* StockFectcher.swift */; };
+		CD59023A21AF3A95000EFF7B /* StockFetcherDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD59023921AF3A95000EFF7B /* StockFetcherDelegate.swift */; };
 		CD786C012194DCEC0099AC03 /* AddEditVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD786C002194DCEC0099AC03 /* AddEditVC.xib */; };
 		CD786C032194DDAD0099AC03 /* AddEditVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD786C022194DDAD0099AC03 /* AddEditVC.swift */; };
 		CDFEE9182182678E005F6B07 /* WkView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CDFEE9172182678E005F6B07 /* WkView.xib */; };
@@ -37,6 +39,8 @@
 		9EF237C81E5E35C000FEFD4F /* ProductVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductVC.xib; sourceTree = "<group>"; };
 		CD59023221A34B63000EFF7B /* AddEditProductVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEditProductVC.swift; sourceTree = "<group>"; };
 		CD59023421A34B79000EFF7B /* AddEditProductVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddEditProductVC.xib; sourceTree = "<group>"; };
+		CD59023721AF3A6F000EFF7B /* StockFectcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StockFectcher.swift; path = ../../../../../../../Documents/StockFectcher.swift; sourceTree = "<group>"; };
+		CD59023921AF3A95000EFF7B /* StockFetcherDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StockFetcherDelegate.swift; path = ../../../../../../../Documents/StockFetcherDelegate.swift; sourceTree = "<group>"; };
 		CD786C002194DCEC0099AC03 /* AddEditVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddEditVC.xib; sourceTree = "<group>"; };
 		CD786C022194DDAD0099AC03 /* AddEditVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEditVC.swift; sourceTree = "<group>"; };
 		CDFEE9172182678E005F6B07 /* WkView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WkView.xib; sourceTree = "<group>"; };
@@ -76,12 +80,12 @@
 		9EF237AF1E5E351800FEFD4F /* NavCtrl_Swift */ = {
 			isa = PBXGroup;
 			children = (
-				CDFEE91621826766005F6B07 /* WkViewController */,
 				9EF237B01E5E351800FEFD4F /* AppDelegate.swift */,
+				9EF237CC1E5E35DB00FEFD4F /* CompanyViewController */,
+				CD59023621AF3827000EFF7B /* StockFetcher */,
+				CDFEE91621826766005F6B07 /* WkViewController */,
 				CD59023121A34B27000EFF7B /* AddEditProduct */,
 				CD59023021A34AF7000EFF7B /* AddEditCompany */,
-				9EF237CC1E5E35DB00FEFD4F /* CompanyViewController */,
-				9EF237CB1E5E35CD00FEFD4F /* ProductViewController */,
 				9EF237C21E5E356100FEFD4F /* Supporting Files */,
 			);
 			path = NavCtrl_Swift;
@@ -114,6 +118,7 @@
 				CDFEE91D218A164C005F6B07 /* Company.swift */,
 				CDFEE91F2190D433005F6B07 /* Dao.swift */,
 				9EF237C41E5E35AA00FEFD4F /* CompanyVC.xib */,
+				9EF237CB1E5E35CD00FEFD4F /* ProductViewController */,
 			);
 			name = CompanyViewController;
 			sourceTree = "<group>";
@@ -136,6 +141,16 @@
 			);
 			name = AddEditProduct;
 			path = "New Group";
+			sourceTree = "<group>";
+		};
+		CD59023621AF3827000EFF7B /* StockFetcher */ = {
+			isa = PBXGroup;
+			children = (
+				CD59023721AF3A6F000EFF7B /* StockFectcher.swift */,
+				CD59023921AF3A95000EFF7B /* StockFetcherDelegate.swift */,
+			);
+			name = StockFetcher;
+			path = "New Group/StockFetcher";
 			sourceTree = "<group>";
 		};
 		CDFEE91621826766005F6B07 /* WkViewController */ = {
@@ -224,8 +239,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CD59023821AF3A6F000EFF7B /* StockFectcher.swift in Sources */,
 				CD59023321A34B63000EFF7B /* AddEditProductVC.swift in Sources */,
 				CDFEE91E218A164C005F6B07 /* Company.swift in Sources */,
+				CD59023A21AF3A95000EFF7B /* StockFetcherDelegate.swift in Sources */,
 				CDFEE91A218267C4005F6B07 /* WkView.swift in Sources */,
 				CD786C032194DDAD0099AC03 /* AddEditVC.swift in Sources */,
 				9EF237C91E5E35C000FEFD4F /* ProductVC.swift in Sources */,
