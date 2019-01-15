@@ -9,10 +9,12 @@
 import Foundation
 import UIKit
 
+
 class AddEditVC : UIViewController{
             var companyIndex: Int!
-            var companyAssigned: Company?
+            var companyAssigned: CompanyCore?
     
+    var tableData = [CompanyCore]()
     
     let defaults = UserDefaults.standard
     @IBOutlet weak var nameText: UITextField!
@@ -24,14 +26,15 @@ class AddEditVC : UIViewController{
          
         let saveButton = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(toggleSaveMode))
         self.navigationItem.rightBarButtonItem = saveButton
-        
-        //var myText = nameText.text
-        //defaults.set(myText, forKey: "myKey")
-        
+
         self.registerForKeyboardNotifications()
         self.deregisterFromKeyboardNotifications()
         
+        
+        
      }
+    
+    
     func keyboardWasShown(_ notification: Notification) {
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
             if self.view.frame.origin.y == 0{
@@ -92,12 +95,15 @@ class AddEditVC : UIViewController{
         
         super.viewWillAppear(animated)
         
- 
+        
+        nameText.text = CDC.sharedInstance.selectedCompany?.name
+        initialText.text = CDC.sharedInstance.selectedCompany?.logo
+        tickerText.text = CDC.sharedInstance.selectedCompany?.ticker
         
         if companyAssigned == nil{ // new company - called from toggleAddMode() - assigning nil to companyAssigned
-            nameText.text! = "ADD COMPANY HERE"
-            initialText.text! = "ADD Logo HERE"
-            tickerText.text! = "ADD Ticker HERE"
+            nameText.placeholder! = "ADD COMPANY HERE"
+            initialText.placeholder! = "ADD URL HERE"
+            tickerText.placeholder! = "ADD TICKER HERE"
             self.title = "Add Company"
         } else {
             let logo = companyAssigned?.logo
@@ -109,24 +115,17 @@ class AddEditVC : UIViewController{
             self.title = "Edit Company"
         }
     }
-   
-    
-    
 
     func toggleSaveMode() {
         if companyAssigned == nil{ // new company - called from toggleAddMode() - assigning nil to companyAssigned
-            Dao.sharedInstance.newCompCreate(newName: nameText.text!, newLogo: initialText.text!, newURL: tickerText.text!, price: 0)
+            CDC.sharedInstance.saveCompanyToCoreData(name: nameText.text!, logo: initialText.text!, ticker: tickerText.text!, price: 0.0)
             
         } else {
-           // Dao.sharedInstance - update
-           // Dao.sharedInstance.updateCompany(index: companyIndex, newName: nameText.text!, newLogo: initialText.text!, newURL: urlText.text!)
-            Dao.sharedInstance.updateCompany(company: companyAssigned!, newName: nameText.text!, newLogo: initialText.text!, newURL: tickerText.text!)
+            CDC.sharedInstance.updateCompany(newName: nameText.text!, newTicker: tickerText.text!, newURL: initialText.text!)
+            self.tableData = CDC.sharedInstance.companies
         }
-        
         self.navigationController?.popViewController(animated: true)
-        //self.dismiss(animated: true, completion: nil)
-        
-    }
+        }
 
 
    

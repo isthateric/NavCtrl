@@ -85,14 +85,14 @@ class Dao {
 //        return newProduct
     }
     
-    func getProductsFor(companyName: String) -> [Product]? {
-        for company in companyArray {
-            if company.name == companyName {
-                return company.products
-            }
-        }
-        return nil
-    }
+/////    func getProductsFor(companyName: String) -> [Product]? {
+//        for company in companyArray {
+//            if company.name == companyName {
+//                return company.products
+//            }
+//        }
+//        return nil
+/////    }
     
     func updateCompany(index: Int, newName: String, newLogo: String, newURL: String){
         //companyArray[index]
@@ -122,6 +122,7 @@ class Dao {
         for (index, company) in companyArray.enumerated() {
             if company.ticker == ticker {
                 companyArray[index].price = price
+                
             }
         }
     }

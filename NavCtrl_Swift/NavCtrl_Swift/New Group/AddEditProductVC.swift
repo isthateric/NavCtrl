@@ -10,8 +10,10 @@ import Foundation
 import UIKit
 
 class AddEditProductVC : UIViewController{
-            var productAssigned: Product?
-            var productIndex: Int!
+    var productAssigned: ProductCore?
+    var productIndex: Int!
+    var currentProduct: Product?
+    var isAdding = true
     
     @IBOutlet weak var productText: UITextField!
     @IBOutlet weak var productLogo: UITextField!
@@ -25,40 +27,36 @@ class AddEditProductVC : UIViewController{
         
         let saveButton = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(toggleSaveMode))
         self.navigationItem.rightBarButtonItem = saveButton
-        self.title = "Product"
-//        let addButton = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector())
-        
-     
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if productAssigned == nil{
-            productText.text! = "ADD COMPANY HERE"
-            productLogo.text! = "ADD LOGO HERE"
-            productURL.text! = "ADD URL HERE"
-            self.title = "Add Product"
-        } else{
-        let logo = productAssigned?.logo
-        let name = productAssigned?.name
-        let url = productAssigned?.url
-        productText.text! = name!
-        productLogo.text! = logo!
-        productURL.text! = url!
-            self.title = " Edit Product"
-            }
+        
+        if isAdding {
+            title = "Add Product"
+                        productText.placeholder! = "ADD Product Name HERE"
+                        productLogo.placeholder! = "ADD PRODUCT IMAGE URL HERE"
+                        productURL.placeholder! = "ADD URL Example: https://www.apple.com/mac"
+                        productAssigned = nil
+        } else {
+            title = "Edit Product"
+            productText.text = CDC.sharedInstance.selectedProduct?.name
+            productLogo.text = CDC.sharedInstance.selectedProduct?.logo
+            productURL.text = CDC.sharedInstance.selectedProduct?.url
+            productAssigned =  CDC.sharedInstance.selectedProduct
+        }
+        
+        productText.text = CDC.sharedInstance.selectedProduct?.name
+        productLogo.text = CDC.sharedInstance.selectedProduct?.logo
+        productURL.text = CDC.sharedInstance.selectedProduct?.url
     }
-    
         func toggleSaveMode() {
-//                 guard let companyName = companyName else { return }
-//
-//                    Dao.sharedInstance.addNewProduct(to: companyName, productName: productText.text!, ProductLogo: productLogo.text!, ProductURL: productURL.text!)
-            Dao.sharedInstance.updateProduct(Product: productAssigned!, newName: productText.text!, newLogo: productLogo.text!, newURL: productURL.text!)
-                self.navigationController?.popViewController(animated: true)
-    }
-
-    
-    func toggleAddMode(){
-
+            print(productText)
+            if productAssigned == nil {
+                CDC.sharedInstance.addNewProduct(productName: productText.text!, productLogo: productLogo.text!, productURL: productURL.text!)
+            } else{
+                CDC.sharedInstance.updateProduct(newName: productText.text!, newLogo: productLogo.text!, newURL: productURL.text!)
+            }
+            self.navigationController?.popViewController(animated: true)
     }
 }

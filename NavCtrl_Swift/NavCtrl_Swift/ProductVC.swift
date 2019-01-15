@@ -9,36 +9,54 @@
 import UIKit
 import WebKit
 
-class ProductVC: UIViewController {
-    
-    
+class ProductVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
+  
     
     @IBOutlet var tableView: UITableView!
-    var products: [Product]?
+    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var productLabel: UILabel!
+    var products: [ProductCore]?
+    
+    
+    var companyData = [CompanyCore]()
+    let addEditproduct = AddEditProductVC()
+    var imageFetcher = ImageFetcher()
+    var company1 = [CompanyCore]()
+
+    
+    
+    var product = ProductCore?.self
     var wkViewController: WkView?
     let web = WKWebView()
-    let addEditproduct = AddEditProductVC()
+    
 //    var newProductListed: [Product]?
-//    let addBarButton = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(toggleAddMode))
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-       
-           
-            let editBarButton = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(toggleEditMode))
-            self.navigationItem.rightBarButtonItem = editBarButton
+//        self.companyData = CDC.sharedInstance.companies
         
-//        let addBarButton = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(toggleAddMode))
-        // Do any additional setup after loading the view.
+       var name = CDC.sharedInstance.selectedCompany?.name
+        var logo = CDC.sharedInstance.selectedCompany?.logo
+            let imageurl = "\(logo ?? "")"
+            var imageName = imageurl
+            productLabel.text = name
+            imageFetcher.fetchCompanyImageFor(domain: imageName ?? "no url", imageView: imageView)
+        
+        
+           
+        let addBarButton = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(toggleAddMode))
+            self.navigationItem.rightBarButtonItem = addBarButton
+        self.tableView.reloadData()
+
     }
     
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        
-        if let title = self.title {
-            products = Dao.sharedInstance.getProductsFor(companyName: title)
-            tableView.reloadData()
-        }
+        products =  CDC.sharedInstance.getProductsFor()
+        tableView.reloadData()
     }
 
     
@@ -47,45 +65,29 @@ class ProductVC: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    
-    func toggleEditMode() {
 
-            if self.navigationItem.rightBarButtonItem?.title == "Edit" {
-                self.tableView.setEditing(true, animated: true)
-                self.tableView.allowsSelectionDuringEditing = true
-                self.navigationItem.rightBarButtonItem?.title = "Done"
-            } else {
-                self.tableView.setEditing(false, animated: true)
-                self.tableView.allowsSelectionDuringEditing = false
-                self.navigationItem.rightBarButtonItem?.title = "Edit"
-            }
-//        if self.navigationItem.rightBarButtonItem?.isEnabled == true {
-//            let companyName =  self.title
-//            addEditproduct.companyName = companyName
-//            self.navigationController?.pushViewController(self.addEditproduct, animated: true)
-//        }
         
-    }
+    
     
     func toggleAddMode(){
         self.addEditproduct.productAssigned = nil
-        self.navigationController?.pushViewController(self.addEditproduct, animated: true)
+        addEditproduct.isAdding = true
+        let transition:CATransition = CATransition()
+        transition.duration = 0.5
+        transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        transition.type = kCATransitionPush
+        transition.subtype = kCATransitionFromBottom
+        self.navigationController!.view.layer.add(transition, forKey: kCATransition)
+        self.navigationController?.pushViewController(self.addEditproduct, animated: false)
 
-//        if self.navigationItem.rightBarButtonItem?.title == "Add" {
-//            self.tableView.setEditing(true, animated: true)
-//            self.navigationController?.pushViewController(AddEditProductVC(), animated: true)
-//            self.tableView.allowsSelectionDuringEditing = true
-//
-        //}
     }
     
-}
 
 
 
 
-extension ProductVC: UITableViewDataSource, UITableViewDelegate {
-    
+
+
     func numberOfSections(in tableView: UITableView) -> Int {
         // Return the number of sections.
         return 1
@@ -104,51 +106,58 @@ extension ProductVC: UITableViewDataSource, UITableViewDelegate {
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let product = products![indexPath.row]
         let CellIdentifier = "Cell"
+        let company = CDC.sharedInstance.selectedCompany
+
         let cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifier) ?? UITableViewCell(style: .subtitle, reuseIdentifier: CellIdentifier)
-        if let product = products?[indexPath.row] {
-            cell.imageView?.image = UIImage.init(named: product.logo)
-            cell.textLabel?.text = product.name
-        }
+        cell.textLabel?.text = product.name
+        cell.imageView?.image = UIImage.init(named: "emptystate-homeView")
+        let imageurl = "\(company?.logo ?? "")"
+
+        var imageName = imageurl
+        imageFetcher.fetchCompanyImageFor(domain: imageName ?? "no url", imageView: cell.imageView)
         return cell
     }
     
         
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-       
-        guard let currentProduct = products?[indexPath.row] else { return }
-        
-//        if self.navigationItem.rightBarButtonItem?.title == "done"{
-//            let productEdit = products?[indexPath.row]{
-//                navigationController?.pushViewController(self.addEdito, animated: true)
-//            }
-//        }
-        if  self.tableView.isEditing == true {
-            self.addEditproduct.productAssigned = currentProduct
-            self.navigationController?.pushViewController(self.addEditproduct, animated: true)
-            return
-        }
-        
         
         if let product = products?[indexPath.row] {
+            
+            CDC.sharedInstance.selectedProduct = product
+            
             self.wkViewController = WkView()
-                       self.wkViewController?.urlString = product.url
-                        self.navigationController?.pushViewController(self.wkViewController!, animated: true)
-                        return
-        }
+            self.wkViewController?.urlString = product.url!
+            
+            let transition:CATransition = CATransition()
+            transition.duration = 0.5
+            transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+            transition.type = kCATransitionPush
+            transition.subtype =  kCATransitionFromTop
 
-        let row = indexPath.row
-        print("Row: \(row)")
+            self.navigationController!.view.layer.add(transition, forKey: kCATransition)
+            self.navigationController?.pushViewController(self.wkViewController!, animated: false)
+            return 
+        }
     }
+    
+    
+    
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-       
+        //  self.tableData = CDC.sharedInstance.companies
+        
+        
         if editingStyle == UITableViewCellEditingStyle.delete{
-            products?.remove(at: indexPath.row)
-            tableView.reloadData()
+            guard let products = products else { return }
+            
+            CDC.sharedInstance.productos = products
+            CDC.sharedInstance.deleteProductFromCoreData(index: indexPath.row)
+            self.products = CDC.sharedInstance.productos
+            self.tableView.reloadData()
         }
-        }
+    }
         
     
     
